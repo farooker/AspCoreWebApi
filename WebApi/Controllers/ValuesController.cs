@@ -6,117 +6,62 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
+using WebApi.Models.FarookModel;
+using WebApi.Service.FarookService;
 
 namespace WebApi.Controllers
 {
 
 
-    [Route("api/[controller]")]
+    [Route("api/FarookApi")]
     [ApiController]
     public class ValuesController : ControllerBase
     {
-        // GET api/values
+        private readonly IFarookService _farookService;
+        public ValuesController(IFarookService farookService)
+        {
+            _farookService = farookService;
+        }
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        [Route("/GetAllFarook")]
+        public ActionResult<IEnumerable<FarookModel>> GetAll()
         {
-
-            List<NumberOfCompaniesWorkedDto> xx = new List<NumberOfCompaniesWorkedDto>();
-            /*
-            xx.Add(new NumberOfCompaniesWorkedDto()
-            {
-                Id = 1,
-                Name = "Eon Technologies",
-                Description = "Financial Technologies"
-            });
-            xx.Add(new NumberOfCompaniesWorkedDto()
-            {
-                Id = 2,
-                Name = "Eon Technologies",
-                Description = "Financial Technologies"
-            });
-            xx.Add(new NumberOfCompaniesWorkedDto()
-            {
-                Id = 3,
-                Name = "Eon Technologies",
-                Description = "Financial Technologies"
-            });
-            */
-           // return Ok(xx.ToList());
-
-
-
-            //List<string> xx =new List<string> {}
-            /*
-            var res = new JObject();
-            JArray array = new JArray();
-            array.Add("Manual text");
-            array.Add(new DateTime(2000, 5, 23));
-            res["id"] = 1;
-            res["result"] = array;
-            */
-
-           return new string[] { "value1", "value2" ,};
-          //  return Ok(Json("123"));
-           //  return Content(res.ToString() ,"application/json");
+            var data = _farookService.GetAll();
+            return Ok(data);
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        [HttpGet]
+        [Route("GetByid/{id}")]
+        public ActionResult<FarookModel> FindById([FromQuery]int id)
         {
-            return "value";
+            var data = _farookService.FindById(id);
+            return Ok(data);
         }
 
-        // POST api/values
         [HttpPost]
-        public ActionResult<string> Post([FromBody] string test)
+        [Route("/PostFarook")]
+        public ActionResult<FarookModel> AddFaRook([FromBody] FarookModel farookModel)
         {
-
-
-            return Ok(test); ; 
+            var data = _farookService.Add(farookModel);
+            return Ok(data);
         }
 
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut]
+        [Route("/UpdateFarook")]
+        public ActionResult<FarookModel> PutFaRook(int id, [FromBody] FarookModel farookModel)
         {
-         
+            var data = _farookService.Update(farookModel);
+            return Ok(data);
         }
 
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete]
+        [Route("Remove/{id}")]
+        public ActionResult<int> Delete(int id)
         {
+            var data = _farookService.Remove(id);
+            return Ok(data);
         }
 
-        
-          /*
-            string connetionString = null;
-            string id = "";
-            SqlConnection cnn;
-            connetionString = "Data Source=DESKTOP-LS5NKKH\\SQLEXPRESS;Initial Catalog=Test;Integrated Security=SSPI;";
-            cnn = new SqlConnection(connetionString);
-            try
-            {
-                cnn.Open();
-                id ="Connection Open ! ";
-                cnn.Close();
-            }
-            catch (Exception ex)
-            {
-                id = "Can not open connection ! ";
-            }*/
-         
     }
-    public class NumberOfCompaniesWorkedDto
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-    }
-    public class User
-    {
-        public string Name { get; set; }
-        public string Password { get; set; }
-    }
+ 
 }
