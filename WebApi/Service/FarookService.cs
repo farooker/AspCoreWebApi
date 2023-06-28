@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebApi.Constant;
 using WebApi.Models.FarookModel;
+using WebApi.Models.ResponseModel;
 using WebApi.Repository.FarookRepository;
+using WebApi.Utils;
 
 namespace WebApi.Service.FarookService
 {
@@ -25,6 +28,7 @@ namespace WebApi.Service.FarookService
 
         public List<FarookModel> GetAll()
         {
+            // throw new ExceptionHandling((int)HttpStatusCodes.NotFound, "faroooksdsdsdsdsadsadsadsadsad");
             var action = _farookRepository.GetAll();
             return action;
         }

@@ -1,7 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using WebApi.Models;
 using WebApi.Models.FarookModel;
 
 namespace WebApi.Repository.FarookRepository
@@ -16,8 +20,12 @@ namespace WebApi.Repository.FarookRepository
     }
     public class FarookRepository : IFarookRepository
     {
+
         public List<FarookModel> GetAll()
         {
+         
+            // Debug.WriteLine(_products);
+
             // Now use database data but i lazy connect database i'll mock data
             var data = DataGetAllFarook();
             return data;
